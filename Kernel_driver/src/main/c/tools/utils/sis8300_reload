@@ -1,0 +1,8 @@
+#!/bin/sh
+
+su root -c "rmmod sis8300drv"
+su root -c "insmod $1 dyndbg"
+for dev in /dev/sis8300* 
+do
+    su root -c "chmod 666 $dev"
+done

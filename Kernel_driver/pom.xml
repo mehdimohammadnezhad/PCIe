@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.iter.codac.units</groupId>
+    <artifactId>kmod-sis8300</artifactId>
+    <packaging>codac</packaging>
+    <version>1.5</version>
+    <name>Linux Device Driver for the Struck 8300 digitizer</name>
+	<url>http://www.ess.org/</url>
+
+    <!-- project properties -->
+    <properties>
+        <unit.type>module</unit.type>
+    </properties>
+
+    <!-- parent pom.xml -->
+    <parent>
+        <groupId>org.iter.codac.units</groupId>
+        <artifactId>maven-iter-settings</artifactId>
+        <version>4.1.0</version>
+    </parent>
+
+    <developers>
+        <developer>
+            <id>kstrnisa</id>
+            <roles>
+                <role>unit owner</role>
+            </roles>
+        </developer>
+    </developers>
+  
+    <!-- configuration of how the project is built -->
+    <build>
+        <!-- this command is executed if you just write 'mvn' -->
+        <defaultGoal>compile</defaultGoal>
+        <!-- plugin configuration -->
+        <plugins>
+            <!-- iter plugin configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-iter-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- packaging configuration -->
+                    <packaging>
+                        <package>
+                            <include type="kmod" />
+                            <include type="file" source="main/c/driver/sis8300.rules" target="lib/sis8300.rules"/>
+                            <include type="altlink" altpath="/etc/udev/rules.d/60-sis8300.rules" target="lib/sis8300.rules"/>
+                        </package>
+                        <package name="lib">
+                            <include type="kmod-lib"/>
+                            <include type="altlink" altpath="%{_libdir}/libsis8300drv.so" target="lib/libsis8300drv.so"/>
+                        </package>
+                        <package name="lib-doc">
+                            <include type="doxygen" name="sis8300drv">
+                                <input>main/c/lib/</input>
+                                <input>main/c/include/</input>
+                            </include>
+                        </package>
+                    </packaging>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
